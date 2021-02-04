@@ -49,4 +49,19 @@ class CrudController extends Controller
       return view('pages.tasks-show', compact('task'));
     }
 
+    public function tasks_create(){
+      $employees = Employee::all();
+      return view('pages.tasks-create', compact('employees'));
+    }
+    public function tasks_store(Request $request){
+      if ($request -> employee_id === NULL) {
+        $task = Task::create($request -> all());
+      } else {
+        $task = Task::make($request -> all());
+        $employee = Employee::findOrFail($request -> get('employee_id'));
+        $task -> employee() -> associate($employee);
+        $task -> save();
+      }
+      return redirect() -> route('tasks-show', $task -> id);
+    }
 }

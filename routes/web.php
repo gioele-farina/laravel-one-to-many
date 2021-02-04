@@ -21,3 +21,6 @@ Route::post('/employee/update/{id}', 'CrudController@employees_update') -> name(
 // TASK
 Route::get('/tasks', 'CrudController@task_index') -> name('tasks-index');
 Route::get('/tasks/show/{id}', 'CrudController@tasks_show') -> name('tasks-show');
+
+Route::get('/tasks/create', 'CrudController@tasks_create') -> name('tasks-create');
+Route::post('/tasks/store', 'CrudController@tasks_store') -> name('tasks-store');

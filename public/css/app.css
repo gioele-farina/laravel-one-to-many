@@ -4,3 +4,9 @@ footer {
   font-style: oblique;
 }
 
+.task-description {
+  display: block;
+  height: 150px;
+  overflow: auto;
+}
+

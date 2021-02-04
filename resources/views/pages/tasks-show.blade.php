@@ -7,5 +7,9 @@
   <h2>{{$task -> title}}</h2>
   <p>Priority: {{$task -> priority}}<p>
   <p>{{$task -> description}}</p>
-  <h5>Assigned to: {{$task -> employee -> name}} {{$task -> employee -> lastname}}</h5>
+  @if ($task -> employee_id === NULL)
+    <h5>Not assigned yet.</h5>
+  @else
+    <h5>Assigned to: {{$task -> employee -> name}} {{$task -> employee -> lastname}}</h5>
+  @endif
 @endsection
