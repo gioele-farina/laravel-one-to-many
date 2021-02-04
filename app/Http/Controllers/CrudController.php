@@ -64,4 +64,24 @@ class CrudController extends Controller
       }
       return redirect() -> route('tasks-show', $task -> id);
     }
+
+    public function tasks_edit($id){
+      $task = Task::findOrFail($id);
+      $employees = Employee::all();
+      return view('pages.task-edit', compact('task', 'employees'));
+    }
+    public function tasks_update(Request $request, $id){
+      $task = Task::findOrFail($id);
+
+      if ($request -> employee_id === NULL) {
+        // Non funzionante: non toglie l'associazione.
+        $task -> update($request -> all());
+      } else {
+        $employee = Employee::findOrFail($request -> get('employee_id'));
+        $task -> employee() -> associate($employee);
+        $task -> update($request -> all());
+      }
+
+      return redirect() -> route('tasks-show', $task -> id);
+    }
 }

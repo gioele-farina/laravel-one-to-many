@@ -24,3 +24,6 @@ Route::get('/tasks/show/{id}', 'CrudController@tasks_show') -> name('tasks-show'
 
 Route::get('/tasks/create', 'CrudController@tasks_create') -> name('tasks-create');
 Route::post('/tasks/store', 'CrudController@tasks_store') -> name('tasks-store');
+
+Route::get('/tasks/edit/{id}', 'CrudController@tasks_edit') -> name('tasks-edit');
+Route::post('/tasks/update/{id}', 'CrudController@tasks_update') -> name('tasks-update');
