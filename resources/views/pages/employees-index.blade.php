@@ -10,6 +10,8 @@
         <a href="{{route('employees-show', $employee -> id)}}">
           {{$employee -> name}} {{$employee -> lastname}}
         </a>
+        -
+        <a href="{{route('employees-edit', $employee -> id)}}">EDIT</a>
       </li>
     @endforeach
   </ul>

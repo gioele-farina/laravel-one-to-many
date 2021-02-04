@@ -28,6 +28,16 @@ class CrudController extends Controller
        return redirect() -> route('employees-show', $employee -> id);
     }
 
+    public function employees_edit($id) {
+      $employee = Employee::findOrFail($id);
+      return view('pages.employees-edit', compact('employee'));
+    }
+    public function employees_update(Request $request, $id){
+      $employee = Employee::findOrFail($id);
+      $employee -> update($request -> all());
+      return redirect() -> route('employees-show', $employee -> id);  
+    }
+
     // TASK
     public function task_index() {
       $tasks = Task::all();
