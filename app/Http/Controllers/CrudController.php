@@ -74,7 +74,8 @@ class CrudController extends Controller
       $task = Task::findOrFail($id);
 
       if ($request -> employee_id === NULL) {
-        // Non funzionante: non toglie l'associazione.
+        $employee = Employee::findOrFail($task -> employee_id);
+        $task -> employee() -> dissociate($employee);
         $task -> update($request -> all());
       } else {
         $employee = Employee::findOrFail($request -> get('employee_id'));
