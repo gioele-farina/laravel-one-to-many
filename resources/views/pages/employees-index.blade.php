@@ -2,6 +2,7 @@
 
 @section('content')
   <h1>Employees list:</h1>
+  <a href="{{route('employees-create')}}">Create a new Employee</a>
   <ul>
 
     @foreach ($employees as $employee)

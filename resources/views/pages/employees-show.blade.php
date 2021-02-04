@@ -10,21 +10,25 @@
     <li>Date of birth: {{$employee -> dateOfBirth}}</li>
     <li>List of tasks:
         <ul>
-          @foreach ($employee -> tasks as $task)
-            <li>
+          @if (count($employee -> tasks) === 0)
+            <li>None</li>
+          @else
+            @foreach ($employee -> tasks as $task)
+              <li>
 
-              <div>
-                <strong>{{$task -> title}}</strong>
-                <br>
-                Priority {{$task -> priority}}
-              </div>
+                <div>
+                  <strong>{{$task -> title}}</strong>
+                  <br>
+                  Priority {{$task -> priority}}
+                </div>
 
-              <div>
-                {{$task -> description}}
-              </div>
+                <div>
+                  {{$task -> description}}
+                </div>
 
-            </li>
-          @endforeach
+              </li>
+            @endforeach
+          @endif
         </ul>
     </li>
   </ul>

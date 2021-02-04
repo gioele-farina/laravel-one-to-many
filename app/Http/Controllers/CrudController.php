@@ -20,6 +20,14 @@ class CrudController extends Controller
       return view('pages.employees-show', compact('employee'));
     }
 
+    public function employees_create() {
+      return view('pages.employees-create');
+    }
+    public function employees_store(Request $request) {
+       $employee = Employee::create($request -> all());
+       return redirect() -> route('employees-show', $employee -> id);
+    }
+
     // TASK
     public function task_index() {
       $tasks = Task::all();
