@@ -35,7 +35,7 @@ class CrudController extends Controller
     public function employees_update(Request $request, $id){
       $employee = Employee::findOrFail($id);
       $employee -> update($request -> all());
-      return redirect() -> route('employees-show', $employee -> id);  
+      return redirect() -> route('employees-show', $employee -> id);
     }
 
     // TASK
@@ -43,4 +43,10 @@ class CrudController extends Controller
       $tasks = Task::all();
       return view('pages.tasks-index', compact('tasks'));
     }
+
+    public function tasks_show($id) {
+      $task = Task::findOrFail($id);
+      return view('pages.tasks-show', compact('task'));
+    }
+
 }
