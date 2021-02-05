@@ -32,3 +32,7 @@ Route::get('/typologies/show/{id}', 'CrudController@typologies_show') -> name('t
 
 Route::get('/typologies/create', 'CrudController@typologies_create') -> name('typologies-create');
 Route::post('/typologies/store', 'CrudController@typologies_store') -> name('typologies-store');
+
+// edit con assegnazione multipla.
+Route::get('/typologies/edit/{id}', 'CrudController@typologies_edit') -> name('typologies-edit');
+Route::post('/typologies/update/{id}', 'CrudController@typologies_update') -> name('typologies-update');
