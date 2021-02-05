@@ -2,7 +2,7 @@
 
 @section('content')
   <h2>Tasks' typologies</h2>
-
+  <a href="{{route('typologies-create')}}">Create a new one</a>
   <ul>
     @foreach ($typologies as $typology)
       <li>

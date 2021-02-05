@@ -29,3 +29,6 @@ Route::post('/tasks/update/{id}', 'CrudController@tasks_update') -> name('tasks-
 // TYPOLOGY
 Route::get('/typologies', 'CrudController@typologies_index') -> name('typologies-index');
 Route::get('/typologies/show/{id}', 'CrudController@typologies_show') -> name('typologies-show');
+
+Route::get('/typologies/create', 'CrudController@typologies_create') -> name('typologies-create');
+Route::post('/typologies/store', 'CrudController@typologies_store') -> name('typologies-store');

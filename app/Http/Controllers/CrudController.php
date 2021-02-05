@@ -95,4 +95,12 @@ class CrudController extends Controller
       $typology = Typology::findOrFail($id);
       return view('pages.typologies-show', compact('typology'));
     }
+
+    public function typologies_create(){
+      return view('pages.typologies-create');
+    }
+    public function typologies_store(Request $request){
+      $typology = Typology::create($request -> all());
+      return redirect() -> route('typologies-show', $typology -> id);
+    }
 }

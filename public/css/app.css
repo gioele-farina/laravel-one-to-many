@@ -4,7 +4,8 @@ footer {
   font-style: oblique;
 }
 
-.task-description {
+.task-description,
+.typology-description {
   display: block;
   height: 150px;
   overflow: auto;
