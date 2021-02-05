@@ -30,7 +30,7 @@
 
       <label for="associated_tasks">Associate tasks (multiple selection allowed):</label>
       <br>
-      <select class="multiple-select" name="associated_tasks" multiple>
+      <select class="multiple-select" name="associated_tasks[]" multiple="multiple">
         @foreach ($tasks as $task)
           <option value="{{$task -> id}}"
 
