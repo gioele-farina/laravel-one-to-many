@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Employee;
 use App\Task;
+use App\Typology;
 
 class CrudController extends Controller
 {
@@ -82,5 +83,16 @@ class CrudController extends Controller
       }
       $task -> update($request -> all());
       return redirect() -> route('tasks-show', $task -> id);
+    }
+
+    // TYPOLOGY
+    public function typologies_index(){
+      $typologies = Typology::all();
+      return view('pages.typologies-index', compact('typologies'));
+    }
+
+    public function typologies_show($id){
+      $typology = Typology::findOrFail($id);
+      return view('pages.typologies-show', compact('typology'));
     }
 }

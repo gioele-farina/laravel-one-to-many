@@ -11,4 +11,9 @@
     <a href="{{route('tasks-index')}}">Go to tasks list</a>
   @endif
 
+  @if ( !(strpos(Request::url(), 'typologies') !== false) )
+
+    <a href="{{route('typologies-index')}}">Go to typologies list</a>
+  @endif
+
 </header>

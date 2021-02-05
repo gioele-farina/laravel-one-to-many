@@ -16,8 +16,6 @@ Route::post('/employee/store', 'CrudController@employees_store') -> name('employ
 Route::get('/employee/edit/{id}', 'CrudController@employees_edit') -> name('employees-edit');
 Route::post('/employee/update/{id}', 'CrudController@employees_update') -> name('employees-update');
 
-
-
 // TASK
 Route::get('/tasks', 'CrudController@task_index') -> name('tasks-index');
 Route::get('/tasks/show/{id}', 'CrudController@tasks_show') -> name('tasks-show');
@@ -27,3 +25,7 @@ Route::post('/tasks/store', 'CrudController@tasks_store') -> name('tasks-store')
 
 Route::get('/tasks/edit/{id}', 'CrudController@tasks_edit') -> name('tasks-edit');
 Route::post('/tasks/update/{id}', 'CrudController@tasks_update') -> name('tasks-update');
+
+// TYPOLOGY
+Route::get('/typologies', 'CrudController@typologies_index') -> name('typologies-index');
+Route::get('/typologies/show/{id}', 'CrudController@typologies_show') -> name('typologies-show');

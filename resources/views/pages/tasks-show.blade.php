@@ -7,6 +7,16 @@
   <h2>{{$task -> title}}</h2>
   <p>Priority: {{$task -> priority}}<p>
   <p>{{$task -> description}}</p>
+
+  <h3>Typologies of task:</h3>
+  <ul>
+    @foreach ($task -> typologies as $type)
+      <a href="{{route('typologies-show', $type -> id)}}">
+        <li>{{$type -> name}}</li>
+      </a>
+    @endforeach
+  </ul>
+
   @if ($task -> employee_id === NULL)
     <h5>Not assigned yet.</h5>
   @else
