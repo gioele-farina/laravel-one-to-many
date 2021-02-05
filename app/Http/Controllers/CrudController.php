@@ -110,6 +110,20 @@ class CrudController extends Controller
       return view('pages.typologies-edit', compact('typology', 'tasks'));
     }
     public function typologies_update(Request $request, $id){
-      dd($request -> all());
+      $typology = Typology::findOrFail($id);
+
+      //Eliminazione di tutte le associazioni
+      $typology->tasks()->detach();
+
+      // creazione delle associazioni
+      $listOfTasksId = $request -> associated_tasks;
+
+      foreach ($listOfTasksId as $taskId) {
+        $task = Task::findOrFail($taskId);
+        $typology -> tasks() -> attach($task);
+      }
+
+      $typology -> update($request -> all());
+      return redirect() -> route('typologies-show', $typology -> id);
     }
 }
