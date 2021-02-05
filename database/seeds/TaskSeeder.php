@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Task;
 use App\Employee;
+use App\Typology;
 
 class TaskSeeder extends Seeder
 {
