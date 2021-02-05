@@ -76,13 +76,11 @@ class CrudController extends Controller
       if ($request -> employee_id === NULL) {
         $employee = Employee::findOrFail($task -> employee_id);
         $task -> employee() -> dissociate($employee);
-        $task -> update($request -> all());
       } else {
         $employee = Employee::findOrFail($request -> get('employee_id'));
         $task -> employee() -> associate($employee);
-        $task -> update($request -> all());
       }
-
+      $task -> update($request -> all());
       return redirect() -> route('tasks-show', $task -> id);
     }
 }
