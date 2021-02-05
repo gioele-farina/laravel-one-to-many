@@ -48,6 +48,29 @@
           >{{$employee -> name}} {{$employee -> lastname}}</option>
         @endforeach
       </select>
+
+      <div>
+        @php
+          $listOfTypologies = [];
+          foreach ($task -> typologies as $typology) {
+            $listOfTypologies[] = $typology -> id;
+          }
+        @endphp
+        <label for="">Typologies of task (multiple select allowed):</label>
+        <br>
+        <select class="multiple-select" name="associated_typologies[]" multiple="multiple">
+          @foreach ($typologies as $typology)
+            <option value="{{$typology -> id}}"
+
+              @if (in_array($typology -> id , $listOfTypologies))
+                selected
+              @endif
+
+            >{{$typology -> name}}</option>
+          @endforeach
+        </select>
+
+      </div>
     </div>
 
     <input type="submit" value="Edit">

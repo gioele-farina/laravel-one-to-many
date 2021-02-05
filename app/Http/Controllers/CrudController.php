@@ -69,7 +69,8 @@ class CrudController extends Controller
     public function tasks_edit($id){
       $task = Task::findOrFail($id);
       $employees = Employee::all();
-      return view('pages.task-edit', compact('task', 'employees'));
+      $typologies = Typology::all();
+      return view('pages.task-edit', compact('task', 'employees', 'typologies'));
     }
     public function tasks_update(Request $request, $id){
       $task = Task::findOrFail($id);
@@ -81,6 +82,16 @@ class CrudController extends Controller
         $employee = Employee::findOrFail($request -> get('employee_id'));
         $task -> employee() -> associate($employee);
       }
+
+      //Eliminazione di tutte le associazioni
+      $task->typologies()->detach();
+      // creazione delle  nuove associazioni
+      $listOfTypId = $request -> associated_typologies;
+      foreach ($listOfTypId as $typId) {
+        $newtypology = Typology::findOrFail($typId);
+        $task -> typologies() -> attach($newtypology);
+      }
+
       $task -> update($request -> all());
       return redirect() -> route('tasks-show', $task -> id);
     }
