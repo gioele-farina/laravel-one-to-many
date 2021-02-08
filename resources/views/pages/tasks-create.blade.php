@@ -38,6 +38,15 @@
       </select>
     </div>
 
+    <div>
+      <label for="assignToTyp[]">Assign to typologies:</label><br>
+      <select name="assignToTyp[]" multiple="multiple">
+        @foreach ($typologies as $typology)
+          <option value="{{$typology -> id}}">{{$typology -> name}}</option>
+        @endforeach
+      </select>
+    </div>
+
     <input type="submit" value="Save">
   </form>
 @endsection

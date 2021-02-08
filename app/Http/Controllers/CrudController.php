@@ -52,7 +52,8 @@ class CrudController extends Controller
 
     public function tasks_create(){
       $employees = Employee::all();
-      return view('pages.tasks-create', compact('employees'));
+      $typologies = Typology::all();
+      return view('pages.tasks-create', compact('employees', 'typologies'));
     }
     public function tasks_store(Request $request){
       if ($request -> employee_id === NULL) {
@@ -63,6 +64,12 @@ class CrudController extends Controller
         $task -> employee() -> associate($employee);
         $task -> save();
       }
+
+      if (array_key_exists('assignToTyp', $request -> all() )) {
+        $listOfTyp = Typology::findOrFail($request['assignToTyp']);
+        $task -> typologies() -> sync($listOfTyp);
+      }
+
       return redirect() -> route('tasks-show', $task -> id);
     }
 
