@@ -83,14 +83,19 @@ class CrudController extends Controller
         $task -> employee() -> associate($employee);
       }
 
+      // Versione compatta
+      $listOfTyp = Typology::findOrFail($request['associated_typologies']);
+      $task -> typologies() -> sync($listOfTyp);
+
+      // Versione estesa
       //Eliminazione di tutte le associazioni
-      $task->typologies()->detach();
+      // $task->typologies()->detach();
       // creazione delle  nuove associazioni
-      $listOfTypId = $request -> associated_typologies;
-      foreach ($listOfTypId as $typId) {
-        $newtypology = Typology::findOrFail($typId);
-        $task -> typologies() -> attach($newtypology);
-      }
+      // $listOfTypId = $request -> associated_typologies;
+      // foreach ($listOfTypId as $typId) {
+      //   $newtypology = Typology::findOrFail($typId);
+      //   $task -> typologies() -> attach($newtypology);
+      // }
 
       $task -> update($request -> all());
       return redirect() -> route('tasks-show', $task -> id);
@@ -123,16 +128,8 @@ class CrudController extends Controller
     public function typologies_update(Request $request, $id){
       $typology = Typology::findOrFail($id);
 
-      //Eliminazione di tutte le associazioni
-      $typology->tasks()->detach();
-
-      // creazione delle associazioni
-      $listOfTasksId = $request -> associated_tasks;
-
-      foreach ($listOfTasksId as $taskId) {
-        $task = Task::findOrFail($taskId);
-        $typology -> tasks() -> attach($task);
-      }
+      $listOfTasks = Task::findOrFail($request['associated_tasks']);
+      $typology -> tasks() -> sync($listOfTasks);
 
       $typology -> update($request -> all());
       return redirect() -> route('typologies-show', $typology -> id);
