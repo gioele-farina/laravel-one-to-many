@@ -9,13 +9,19 @@
   <p>{{$task -> description}}</p>
 
   <h3>Typologies of task:</h3>
-  <ul>
-    @foreach ($task -> typologies as $type)
-      <a href="{{route('typologies-show', $type -> id)}}">
-        <li>{{$type -> name}}</li>
-      </a>
-    @endforeach
-  </ul>
+  @if (count($task -> typologies) !== 0)
+    <ul>
+      @foreach ($task -> typologies as $type)
+        <a href="{{route('typologies-show', $type -> id)}}">
+          <li>{{$type -> name}}</li>
+        </a>
+      @endforeach
+    </ul>
+  @else
+    <ul>
+      <li>No typologies assigned</li>
+    </ul>
+  @endif
 
   @if ($task -> employee_id === NULL)
     <h5>Not assigned yet.</h5>

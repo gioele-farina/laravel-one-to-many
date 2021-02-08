@@ -83,9 +83,15 @@ class CrudController extends Controller
         $task -> employee() -> associate($employee);
       }
 
+      // $task -> save();
+
       // Versione compatta
-      $listOfTyp = Typology::findOrFail($request['associated_typologies']);
-      $task -> typologies() -> sync($listOfTyp);
+      if (array_key_exists('associated_typologies', $request -> all() )) {
+        $listOfTyp = Typology::findOrFail($request['associated_typologies']);
+        $task -> typologies() -> sync($listOfTyp);
+      } else {
+        $task -> typologies() -> detach();
+      }
 
       // Versione estesa
       //Eliminazione di tutte le associazioni
@@ -128,8 +134,12 @@ class CrudController extends Controller
     public function typologies_update(Request $request, $id){
       $typology = Typology::findOrFail($id);
 
-      $listOfTasks = Task::findOrFail($request['associated_tasks']);
-      $typology -> tasks() -> sync($listOfTasks);
+      if (array_key_exists('associated_tasks', $request -> all() )) {
+        $listOfTasks = Task::findOrFail($request['associated_tasks']);
+        $typology -> tasks() -> sync($listOfTasks);
+      } else {
+        $typology -> tasks() -> detach();
+      }
 
       $typology -> update($request -> all());
       return redirect() -> route('typologies-show', $typology -> id);
