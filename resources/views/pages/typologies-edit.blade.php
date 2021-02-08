@@ -21,12 +21,13 @@
     </div>
 
     <div>
-      @php
+      {{-- versione manuale --}}
+      {{-- @php
       $listOfTasks = [];
       foreach ($typology -> tasks as $task) {
         $listOfTasks[] = $task -> id;
       }
-      @endphp
+      @endphp --}}
 
       <label for="associated_tasks">Associate tasks (multiple selection allowed):</label>
       <br>
@@ -34,9 +35,15 @@
         @foreach ($tasks as $task)
           <option value="{{$task -> id}}"
 
-            @if (in_array($task -> id ,$listOfTasks))
+            {{-- Versione automatica --}}
+            @if ($typology -> tasks -> contains($task -> id))
               selected
             @endif
+
+            {{-- Versione manuale --}}
+            {{-- @if (in_array($task -> id ,$listOfTasks))
+              selected
+            @endif --}}
 
           >{{$task -> title}}</option>
         @endforeach

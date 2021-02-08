@@ -50,21 +50,29 @@
       </select>
 
       <div>
-        @php
+        {{-- Versone manuale --}}
+        {{-- @php
           $listOfTypologies = [];
           foreach ($task -> typologies as $typology) {
             $listOfTypologies[] = $typology -> id;
           }
-        @endphp
+        @endphp --}}
         <label for="">Typologies of task (multiple select allowed):</label>
         <br>
         <select class="multiple-select" name="associated_typologies[]" multiple="multiple">
+
           @foreach ($typologies as $typology)
             <option value="{{$typology -> id}}"
 
-              @if (in_array($typology -> id , $listOfTypologies))
+              {{-- Versione automatica --}}
+              @if ($task -> typologies -> contains($typology -> id))
                 selected
               @endif
+
+              {{-- Versione manuale --}}
+              {{-- @if (in_array($typology -> id , $listOfTypologies))
+                selected
+              @endif --}}
 
             >{{$typology -> name}}</option>
           @endforeach
