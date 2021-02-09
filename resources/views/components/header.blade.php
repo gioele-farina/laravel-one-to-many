@@ -26,4 +26,13 @@
     </div>
   @endif
 
+  {{-- Errore personalizzato --}}
+  @if (session()->get( 'error' ))
+
+    <ul>
+      <li>{{ session()->get( 'error' ) }}</li>
+    </ul>
+  @endif
+
+
 </header>

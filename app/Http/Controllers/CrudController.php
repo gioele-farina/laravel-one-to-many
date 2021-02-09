@@ -215,8 +215,25 @@ class CrudController extends Controller
             'description' => 'required|max:64000',
       ])->validate();
 
-      //inserire validazione anche delle tasks
+      //Validazione della tasks.
+      $tasksID = [];
+      foreach (Task::all() as $task) {
+        $tasksID[] = $task -> id;
+      }
 
+      if (array_key_exists('associated_tasks', $request -> all() )) {
+        foreach ($request -> associated_tasks as $taskID) {
+
+          // Se nelle associated_tasks c'è un valore non presente nel db (id di tutte le task),
+          // lancia il redirect e l'errore.
+          if (!in_array($taskID, $tasksID)) {
+
+            return redirect() -> route('typologies-edit', $id)->with( ['error' => 'Usa la select birbone! E non cercare di fregare il front-end, é da brutte persone!'] );
+          }
+        }
+      }
+
+      // Fine validazione
       $typology = Typology::findOrFail($id);
 
       if (array_key_exists('associated_tasks', $request -> all() )) {
