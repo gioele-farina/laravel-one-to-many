@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+
 use App\Employee;
 use App\Task;
 use App\Typology;
@@ -25,6 +27,15 @@ class CrudController extends Controller
       return view('pages.employees-create');
     }
     public function employees_store(Request $request) {
+      // $maggiorenne = strtotime("-18 years");
+      // 'dateOfBirth' => 'required|date|date_format:Y-m-d|before_or_equal:' . $maggiorenne,
+
+      Validator::make($request->all(), [
+        'name' => 'required|min:3|max:100',
+        'lastname' => 'required|min:3|max:100',
+        'dateOfBirth' => 'required|date',
+      ])->validate();
+
        $employee = Employee::create($request -> all());
        return redirect() -> route('employees-show', $employee -> id);
     }
