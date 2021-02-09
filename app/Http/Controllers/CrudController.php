@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+// use Illuminate\Validation\Rule;
+
 
 use App\Employee;
 use App\Task;
@@ -45,6 +47,13 @@ class CrudController extends Controller
       return view('pages.employees-edit', compact('employee'));
     }
     public function employees_update(Request $request, $id){
+
+      Validator::make($request->all(), [
+        'name' => 'required|min:3|max:100',
+        'lastname' => 'required|min:3|max:100',
+        'dateOfBirth' => 'required|date',
+      ])->validate();
+
       $employee = Employee::findOrFail($id);
       $employee -> update($request -> all());
       return redirect() -> route('employees-show', $employee -> id);
@@ -67,6 +76,20 @@ class CrudController extends Controller
       return view('pages.tasks-create', compact('employees', 'typologies'));
     }
     public function tasks_store(Request $request){
+
+        $employeesID = [];
+        foreach (Employee::all() as $employee) {
+          $employeesID[] = $employee -> id;
+        }
+        $request['employeesID'] = $employeesID;
+
+      Validator::make($request->all(), [
+        'title' => 'required|min:3|max:200',
+        'description' => 'required|max:64000',
+        'priority' => 'required|numeric|min:1|max:5',
+        'employee_id' => 'nullable|in_array:employeesID.*'
+      ])->validate();
+
       if ($request -> employee_id === NULL) {
         $task = Task::create($request -> all());
       } else {
