@@ -83,11 +83,18 @@ class CrudController extends Controller
         }
         $request['employeesID'] = $employeesID;
 
+        $typologiesID = [];
+        foreach (Typology::all() as $typology) {
+          $typologiesID[] = $typology -> id;
+        }
+        $request['typologiesID'] = $typologiesID;
+
       Validator::make($request->all(), [
         'title' => 'required|min:3|max:200',
         'description' => 'required|max:64000',
         'priority' => 'required|numeric|min:1|max:5',
-        'employee_id' => 'nullable|in_array:employeesID.*'
+        'employee_id' => 'nullable|in_array:employeesID.*',
+        'typologiesID.*' => 'nullable|in_array:typologiesID.*' //non funziona
       ])->validate();
 
       if ($request -> employee_id === NULL) {
@@ -114,6 +121,27 @@ class CrudController extends Controller
       return view('pages.task-edit', compact('task', 'employees', 'typologies'));
     }
     public function tasks_update(Request $request, $id){
+
+      $employeesID = [];
+      foreach (Employee::all() as $employee) {
+        $employeesID[] = $employee -> id;
+      }
+      $request['employeesID'] = $employeesID;
+
+      $typologiesID = [];
+      foreach (Typology::all() as $typology) {
+        $typologiesID[] = $typology -> id;
+      }
+      $request['typologiesID'] = $typologiesID;
+
+      Validator::make($request->all(), [
+        'title' => 'required|min:3|max:200',
+        'description' => 'required|max:64000',
+        'priority' => 'required|numeric|min:1|max:5',
+        'employee_id' => 'nullable|in_array:employeesID.*',
+        'typologiesID.*' => 'nullable|in_array:typologiesID.*' //non funziona
+      ])->validate();
+
       $task = Task::findOrFail($id);
 
       if ($request -> employee_id === NULL) {
@@ -187,4 +215,6 @@ class CrudController extends Controller
       $typology -> update($request -> all());
       return redirect() -> route('typologies-show', $typology -> id);
     }
+
+    // OTHERS
 }
