@@ -193,6 +193,12 @@ class CrudController extends Controller
       return view('pages.typologies-create');
     }
     public function typologies_store(Request $request){
+
+      Validator::make($request->all(), [
+            'name' => 'required|min:3|max:100',
+            'description' => 'required|max:64000',
+      ])->validate();
+
       $typology = Typology::create($request -> all());
       return redirect() -> route('typologies-show', $typology -> id);
     }
@@ -203,6 +209,14 @@ class CrudController extends Controller
       return view('pages.typologies-edit', compact('typology', 'tasks'));
     }
     public function typologies_update(Request $request, $id){
+
+      Validator::make($request->all(), [
+            'name' => 'required|min:3|max:100',
+            'description' => 'required|max:64000',
+      ])->validate();
+
+      //inserire validazione anche delle tasks
+
       $typology = Typology::findOrFail($id);
 
       if (array_key_exists('associated_tasks', $request -> all() )) {
