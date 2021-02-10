@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
-// use Illuminate\Validation\Rule;
-
 
 use App\Employee;
 use App\Task;
@@ -29,14 +27,8 @@ class CrudController extends Controller
       return view('pages.employees-create');
     }
     public function employees_store(Request $request) {
-      // $maggiorenne = strtotime("-18 years");
-      // 'dateOfBirth' => 'required|date|date_format:Y-m-d|before_or_equal:' . $maggiorenne,
 
-      Validator::make($request->all(), [
-        'name' => 'required|min:3|max:100',
-        'lastname' => 'required|min:3|max:100',
-        'dateOfBirth' => 'required|date',
-      ])->validate();
+      Validator::make($request->all(), $this-> employeeValidator)->validate();
 
        $employee = Employee::create($request -> all());
        return redirect() -> route('employees-show', $employee -> id);
@@ -48,11 +40,7 @@ class CrudController extends Controller
     }
     public function employees_update(Request $request, $id){
 
-      Validator::make($request->all(), [
-        'name' => 'required|min:3|max:100',
-        'lastname' => 'required|min:3|max:100',
-        'dateOfBirth' => 'required|date',
-      ])->validate();
+      Validator::make($request->all(), $this-> employeeValidator)->validate();
 
       $employee = Employee::findOrFail($id);
       $employee -> update($request -> all());
@@ -77,25 +65,7 @@ class CrudController extends Controller
     }
     public function tasks_store(Request $request){
 
-        $employeesID = [];
-        foreach (Employee::all() as $employee) {
-          $employeesID[] = $employee -> id;
-        }
-        $request['employeesID'] = $employeesID;
-
-        $typologiesID = [];
-        foreach (Typology::all() as $typology) {
-          $typologiesID[] = $typology -> id;
-        }
-        $request['typologiesID'] = $typologiesID;
-
-      Validator::make($request->all(), [
-        'title' => 'required|min:3|max:200',
-        'description' => 'required|max:64000',
-        'priority' => 'required|numeric|min:1|max:5',
-        'employee_id' => 'nullable|in_array:employeesID.*',
-        'typologiesID.*' => 'nullable|in_array:typologiesID.*' //non funziona
-      ])->validate();
+      $this -> taskValidator($request);
 
       if ($request -> employee_id === NULL) {
         $task = Task::create($request -> all());
@@ -122,25 +92,7 @@ class CrudController extends Controller
     }
     public function tasks_update(Request $request, $id){
 
-      $employeesID = [];
-      foreach (Employee::all() as $employee) {
-        $employeesID[] = $employee -> id;
-      }
-      $request['employeesID'] = $employeesID;
-
-      $typologiesID = [];
-      foreach (Typology::all() as $typology) {
-        $typologiesID[] = $typology -> id;
-      }
-      $request['typologiesID'] = $typologiesID;
-
-      Validator::make($request->all(), [
-        'title' => 'required|min:3|max:200',
-        'description' => 'required|max:64000',
-        'priority' => 'required|numeric|min:1|max:5',
-        'employee_id' => 'nullable|in_array:employeesID.*',
-        'typologiesID.*' => 'nullable|in_array:typologiesID.*' //non funziona
-      ])->validate();
+      $this -> taskValidator($request);
 
       $task = Task::findOrFail($id);
 
@@ -194,10 +146,7 @@ class CrudController extends Controller
     }
     public function typologies_store(Request $request){
 
-      Validator::make($request->all(), [
-            'name' => 'required|min:3|max:100',
-            'description' => 'required|max:64000',
-      ])->validate();
+      Validator::make($request->all(), $this-> typologyValidator )->validate();
 
       $typology = Typology::create($request -> all());
       return redirect() -> route('typologies-show', $typology -> id);
@@ -210,10 +159,7 @@ class CrudController extends Controller
     }
     public function typologies_update(Request $request, $id){
 
-      Validator::make($request->all(), [
-            'name' => 'required|min:3|max:100',
-            'description' => 'required|max:64000',
-      ])->validate();
+      Validator::make($request->all(), $this-> typologyValidator )->validate();
 
       //Validazione della tasks.
       $tasksID = [];
@@ -228,7 +174,8 @@ class CrudController extends Controller
           // lancia il redirect e l'errore.
           if (!in_array($taskID, $tasksID)) {
 
-            return redirect() -> route('typologies-edit', $id)->with( ['error' => 'Usa la select birbone! E non cercare di fregare il front-end, é da brutte persone!'] );
+            return redirect() -> back ()
+            ->with(['error' => 'Usa la select birbone! E non cercare di fregare il front-end, é da brutte persone!']);
           }
         }
       }
@@ -248,4 +195,30 @@ class CrudController extends Controller
     }
 
     // OTHERS
+    protected $employeeValidator = [
+      'name' => 'required|min:3|max:100',
+      'lastname' => 'required|min:3|max:100',
+      'dateOfBirth' => 'required|date',
+    ];
+
+    protected function taskValidator($request) {
+      $employeesID = [];
+      foreach (Employee::all() as $employee) {
+        $employeesID[] = $employee -> id;
+      }
+      $request['employeesID'] = $employeesID;
+
+      Validator::make($request->all(), [
+        'title' => 'required|min:3|max:200',
+        'description' => 'required|max:64000',
+        'priority' => 'required|numeric|min:1|max:5',
+        'employee_id' => 'nullable|in_array:employeesID.*',
+      ])->validate();
+    }
+
+    protected $typologyValidator = [
+      'name' => 'required|min:3|max:100',
+      'description' => 'required|max:64000',
+    ];
+
 }
